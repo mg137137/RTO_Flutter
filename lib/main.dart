@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:rto_flutter/loginpage.dart';
 
+import 'newlogin.dart';
+
 void main() {
   runApp(const MyApp());
 }
