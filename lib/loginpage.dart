@@ -91,192 +91,198 @@ class _Login_PageState extends State<Login_Page> {
     double FixedWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: Container(
-          height: FixedHeight,
-          width: FixedWidth,
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                Color(0xd34897ce),
-                Color(0xff0724e7),
-              ])),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Circle Image
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, FixedHeight * 0.06, 0, 0),
-                  height: FixedHeight * 0.2,
-                  width: FixedWidth * 0.4,
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage('assets/download.jpg'),
-                  )),
-
-              Container(
-                // height: FixedHeight*0.6,
-                width: FixedWidth,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(FixedHeight * 0.06),
-                      topLeft: Radius.circular(FixedHeight * 0.06)),
+      body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Positioned(
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 500,top: 50),
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xd34897ce),
+                              Color(0xff0724e7),
+                            ])),
+                    width: MediaQuery.of(context).size.width,
+                    child: CircleAvatar(
+                        radius: 100,
+                        backgroundImage: AssetImage('assets/download.jpg')),
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(
-                          0, FixedHeight * 0.04, FixedHeight * 0.34, 0),
-                      child: Text(
-                        'Sign in to',
-                        style: TextStyle(
-                          fontSize: FixedHeight * 0.04,
-                        ),
-                      ),
+                Positioned(
+                  top: 300,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 600,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20)),
                     ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, FixedHeight * 0.24, 0),
-                      child: Text(
-                        'Your Account !',
-                        style: TextStyle(
-                            fontSize: FixedHeight * 0.04,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: FixedHeight * 0.08),
-                    Container(
-                      height: FixedHeight * 0.08,
-                      width: FixedHeight * 0.5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(FixedHeight * 0.03),
-                        color: const Color.fromRGBO(0, 0, 0, 0.10),
-                        boxShadow: const [
-                          BoxShadow(
-                            offset: Offset(0, -4),
-                            blurRadius: 4,
-                            color: Color.fromRGBO(0, 0, 0, 0.10),
-                            inset: true,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      'Sign in to',
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          BoxShadow(
-                            offset: Offset(0, 4),
-                            blurRadius: 4,
-                            color: Color.fromRGBO(0, 0, 0, 0.50),
-                            inset: true,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: const Text(
+                                      'Your Account !',
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _usernameController,
-                        decoration: const InputDecoration(
-                          // filled: true,
-                          // fillColor: Color.fromRGBO(0, 0, 0, 0.10),
-                          border: InputBorder.none,
-                          // labelText: 'Email Address',
-                          contentPadding: EdgeInsets.fromLTRB(15, 18, 10, 20),
-                          // border: OutlineInputBorder(
-                          //     // borderSide: BorderSide(color: Colors.white),
-                          //     // borderRadius: BorderRadius.circular(10.0),
-                          // ),
+                          SizedBox(height: 50,),
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color.fromRGBO(0, 0, 0, 0.10),
+                              boxShadow: const [
+                                BoxShadow(
+                                  offset: Offset(0, -4),
+                                  blurRadius: 4,
+                                  color: Color.fromRGBO(0, 0, 0, 0.10),
+                                  inset: true,
+                                ),
+                                BoxShadow(
+                                  offset: Offset(0, 4),
+                                  blurRadius: 4,
+                                  color: Color.fromRGBO(0, 0, 0, 0.50),
+                                  inset: true,
+                                ),
+                              ],
+                            ),
+                            child:  TextField(
+                              controller: _usernameController,
+                              decoration: InputDecoration(
+                                // filled: true,
+                                // fillColor: Color.fromRGBO(0, 0, 0, 0.10),
+                                border: InputBorder.none,
+                                // labelText: 'Email Address',
+                                contentPadding: EdgeInsets.fromLTRB(15, 18, 10, 20),
+                                // border: OutlineInputBorder(
+                                //     // borderSide: BorderSide(color: Colors.white),
+                                //     // borderRadius: BorderRadius.circular(10.0),
+                                // ),
 
-                          hintText: 'Enter Username',
-                          isDense: true,
-                          suffixIcon: Icon(
-                            Icons.mail,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: FixedHeight * 0.016,
-                    ),
-                    Container(
-                      height: FixedHeight * 0.08,
-                      width: FixedHeight * 0.5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: const Color.fromRGBO(0, 0, 0, 0.10),
-                        boxShadow: const [
-                          BoxShadow(
-                            offset: Offset(0, -4),
-                            blurRadius: 4,
-                            color: Color.fromRGBO(0, 0, 0, 0.10),
-                            inset: true,
-                          ),
-                          BoxShadow(
-                            offset: Offset(0, 4),
-                            blurRadius: 4,
-                            color: Color.fromRGBO(0, 0, 0, 0.50),
-                            inset: true,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _passwordController,
-                        decoration: const InputDecoration(
-                          // filled: true,
-                          // fillColor: Color.fromRGBO(0, 0, 0, 0.10),
-                          border: InputBorder.none,
-                          // labelText: 'Email Address',
-                          contentPadding: EdgeInsets.fromLTRB(15, 18, 10, 20),
-
-                          hintText: 'Password',
-                          isDense: true,
-                          suffixIcon: Icon(
-                            Icons.remove_red_eye_outlined,
-                            size: 17,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // For Forgot Password Text
-                    // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(20, 10, 40, 20),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.end,
-                    //     children: const [
-                    //       Text(
-                    //         'Forgot Password',
-                    //         style: TextStyle(color: Colors.blueAccent),
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
-
-                    Container(
-                      margin: EdgeInsets.fromLTRB(
-                          0, FixedHeight * 0.05, 0, FixedHeight * 0.16),
-                      child: SizedBox(
-                        height: FixedHeight * 0.065,
-                        width: FixedHeight * 0.45,
-                        child: ElevatedButton(
-                          child: const Text('LOGIN'),
-                          onPressed: () {
-                            if (_isLoading != null) {
-                              _login();
-                            }
-                          },
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                                hintText: 'Enter Username',
+                                isDense: true,
+                                suffixIcon: Icon(
+                                  Icons.mail,
+                                  size: 20,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: 40,),
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color.fromRGBO(0, 0, 0, 0.10),
+                              boxShadow: const [
+                                BoxShadow(
+                                  offset: Offset(0, -4),
+                                  blurRadius: 4,
+                                  color: Color.fromRGBO(0, 0, 0, 0.10),
+                                  inset: true,
+                                ),
+                                BoxShadow(
+                                  offset: Offset(0, 4),
+                                  blurRadius: 4,
+                                  color: Color.fromRGBO(0, 0, 0, 0.50),
+                                  inset: true,
+                                ),
+                              ],
+                            ),
+                            child:  TextField(
+                               controller: _passwordController,
+                              decoration: InputDecoration(
+                                // filled: true,
+                                // fillColor: Color.fromRGBO(0, 0, 0, 0.10),
+                                border: InputBorder.none,
+                                // labelText: 'Email Address',
+                                contentPadding: EdgeInsets.fromLTRB(15, 18, 10, 20),
+                                // border: OutlineInputBorder(
+                                //     // borderSide: BorderSide(color: Colors.white),
+                                //     // borderRadius: BorderRadius.circular(10.0),
+                                // ),
+
+                                hintText: 'Enter Password',
+                                isDense: true,
+                                suffixIcon: Icon(
+                                  Icons.mail,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 50),
+                            child: SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              child: ElevatedButton(
+                                child: const Text('LOGIN'),
+                                onPressed: () {
+                                  if (_isLoading != null) {
+                                    _login();
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        )),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
