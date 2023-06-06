@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:http/http.dart' as http;
+import 'package:rto_flutter/Delar%20List%20Button/testing%20delar%20detail.dart';
 import 'package:rto_flutter/Six_Boxes/All_Book.dart';
 import 'package:rto_flutter/Six_Boxes/Categorywise_Book.dart';
 import 'package:rto_flutter/Six_Boxes/Checkbook_Status.dart';
@@ -477,13 +478,14 @@ class _DashboardState extends State<Dashboard> {
                             decoration: sixboxdecoration,
                             child: TextButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => MyTextField(
-                                //             token: '$stoken',
-                                //           )),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => testing_delar(
+                                            token: '$stoken',
+                                            id: 'Dealer_1684852413669_li0dmin9',
+                                          )),
+                                );
                               },
                               child: const Text(
                                 'TESTING BOOK',
