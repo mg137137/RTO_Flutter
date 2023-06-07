@@ -36,12 +36,34 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
     'Appointment',
     'Complete',
   ];
+
+  void _runfilter(String enterkeyword) {
+    if (enterkeyword.isEmpty) {
+      _result = _booklistdetail;
+    } else {
+      // result=_booklistdetail.where((user) => user['vehicleRegistrationNumber'].toLowerCase().contains(enterkeyword.toLowerCase().toList();))
+      _result = _booklistdetail
+          .where((user) => user['vehicleRegistrationNumber']
+              .toUpperCase()
+              .contains(enterkeyword.toUpperCase()))
+          .toList();
+      print(_result.length);
+    }
+    setState(() {
+      _foundvehiclenumber = _result;
+    });
+  }
+
+  List<dynamic> _foundvehiclenumber = [];
   static String value = 'Pending';
   bool isLoggedIn = false;
   String _response = '';
   SharedPreferences? _prefs;
+
   List<dynamic> _booklistdetail = [];
+
   List<dynamic> _filteredBookListDetail = [];
+  List<dynamic> _result = [];
 
   // List<dynamic> _vehicleid = [];
   // List<dynamic> _filteredBookListDetail = [];
@@ -54,17 +76,6 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
     value = widget.dopdown_name;
     print('valu in initstat');
     print(value);
-  }
-
-  void _onTextChanged(String text) {
-    setState(() {
-      _filteredBookListDetail = _booklistdetail
-          .where((item) => item['vehicleRegistrationNumber']
-              .toString()
-              .toLowerCase()
-              .contains(text.toLowerCase()))
-          .toList();
-    });
   }
 
   Future<void> _fetchData() async {
@@ -84,6 +95,10 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
           //     (jsonDecode(response.body)['vehicleRegistrationNumber']);
 
           _booklistdetail = json.decode(response.body);
+
+          _foundvehiclenumber = _booklistdetail;
+
+          print(_foundvehiclenumber);
           // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
           length = _booklistdetail.length.toInt();
           _filteredBookListDetail = List.from(_booklistdetail);
@@ -102,11 +117,9 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
         setState(() {
           _response = response.body;
 
-          // _vehiclenumber =
-          //     (jsonDecode(response.body)['vehicleRegistrationNumber']);
-
           _booklistdetail = json.decode(response.body);
-          // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
+          _foundvehiclenumber = _booklistdetail;
+
           length = _booklistdetail.length.toInt();
           _filteredBookListDetail = List.from(_booklistdetail);
         });
@@ -124,12 +137,11 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
         setState(() {
           _response = response.body;
 
-          // _vehiclenumber =
-          //     (jsonDecode(response.body)['vehicleRegistrationNumber']);
-
           _booklistdetail = json.decode(response.body);
+          _foundvehiclenumber = _booklistdetail;
+
           _filteredBookListDetail = List.from(_booklistdetail);
-          // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
+
           length = _booklistdetail.length.toInt();
         });
         _prefs?.setString('response', _response);
@@ -267,14 +279,16 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
                                 height: 40,
                                 width: 160,
                                 child: TextFormField(
-                                  onChanged: (value) {
-                                    // Call a function to filter the list based on the entered search text
-                                    _filteredBookListDetail;
-                                  },
-                                  //controller: _phoneController,
                                   // cursorColor: Colors.black,
                                   keyboardType: TextInputType.text,
+                                  controller: _searchController,
                                   textAlign: TextAlign.start,
+                                  onTap: () {
+                                    print('object');
+                                  },
+                                  onChanged: (value) {
+                                    _runfilter(value);
+                                  },
                                   style: const TextStyle(
                                     color: Colors.black,
                                   ),
@@ -320,15 +334,21 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
                                 height: 40,
                                 width: 160,
                                 child: TextFormField(
-                                  controller: _searchController,
                                   //controller: _phoneController,
                                   // cursorColor: Colors.black,
                                   keyboardType: TextInputType.text,
+                                  controller: _searchController,
                                   textAlign: TextAlign.start,
-                                  style: const TextStyle(
+                                  onTap: () {
+                                    print('object');
+                                  },
+                                  onChanged: (value) {
+                                    _runfilter(value);
+                                  },
+                                  style: TextStyle(
                                     color: Colors.black,
                                   ),
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                       hintStyle: TextStyle(
                                         color: Colors.black12,
                                       ),
@@ -391,12 +411,13 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _booklistdetail[index]['vehicleRegistrationNumber'],
+                          _foundvehiclenumber[index]
+                              ['vehicleRegistrationNumber'],
                         ),
                         ElevatedButton.icon(
                           onPressed: () async {
-                            final String id =
-                                _booklistdetail[index]['vehicleRegistrationId'];
+                            final String id = _foundvehiclenumber[index]
+                                ['vehicleRegistrationId'];
 
                             // final url = Uri.parse(
                             //     'http://192.168.0.104:8003/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id');
@@ -442,7 +463,7 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
                   ),
                 );
               },
-              itemCount: _booklistdetail.length,
+              itemCount: _foundvehiclenumber.length,
             ),
           ),
         ),

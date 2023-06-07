@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'package:rto_flutter/Delar%20List%20Button/testing%20delar%20detail.dart';
 import 'package:rto_flutter/Six_Boxes/All_Book.dart';
@@ -12,13 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Api Detail/api_Configration_file.dart';
 import 'Delar List Button/Delar List Home.dart';
+import 'Six_Boxes/vehicle_detail.dart';
 
+List<String> statess = [];
+List<String> statess_id = [];
+bool statess_check = false;
 bool Logout = false;
-late final String name;
+String name = '';
 String TotalBookNumber = '', Pendingbook = '', Appointment = '', Complete = '';
-late final String stoken;
+String stoken = '';
 TextEditingController _vehiclesearch = TextEditingController();
-late String searchdata;
+String searchdata = '';
 
 class Dashboard extends StatefulWidget {
   final String token;
@@ -37,18 +42,55 @@ class _DashboardState extends State<Dashboard> {
   SharedPreferences? _prefs;
   List<dynamic> _delardetail = [];
   List<dynamic> _Totalbooknumber = [];
+
   @override
   void initState() {
     super.initState();
     _checkLoggedIn();
     _fetchData();
     _fetchNumber();
+
+    print('before all book');
+    _AllBook();
   }
 
   @override
   void dispose() {
     _vehiclesearch.dispose();
     super.dispose();
+  }
+
+  Future<void> _AllBook() async {
+    _prefs = await SharedPreferences.getInstance();
+    final response = await http.get(
+      Uri.parse('http://$api_id/mobileApprouter/getBookList'),
+      headers: {'Authorization': 'Bearer ${widget.token}'},
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        _response = response.body;
+        //
+        // statess = (jsonDecode(response.body)['vehicleRegistrationNumber'])
+        //     .toString() as List<String>;
+        // print('The statesss is :-' + '$statess');
+
+        _booklistdetail = json.decode(response.body);
+        setState(() {});
+
+        for (var i = 0; i < _booklistdetail.length; i++) {
+          statess.add(_booklistdetail[i]['vehicleRegistrationNumber']);
+          statess_id.add(_booklistdetail[i]['vehicleRegistrationId']);
+        }
+        // List<String> statess = _booklistdetail;
+
+        print('The statesss is :-' + '$statess');
+        // _foundvehiclenumber = _booklistdetail;
+
+        // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
+        // length = _booklistdetail.length.toInt();
+      });
+      _prefs?.setString('response', _response);
+    }
   }
 
   Future<void> _fetchData() async {
@@ -116,6 +158,8 @@ class _DashboardState extends State<Dashboard> {
       isLoggedIn = false;
     });
   }
+
+  final TextEditingController _typeAheadController = TextEditingController();
 
   final Decoration sixboxdecoration = BoxDecoration(boxShadow: [
     BoxShadow(
@@ -281,33 +325,40 @@ class _DashboardState extends State<Dashboard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SizedBox(
+                        Container(
                           width: FixedWidth * 0.7,
-                          child: TextFormField(
-                            controller: _vehiclesearch,
-                            // cursorColor: Colors.black,
-                            keyboardType: TextInputType.text,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: FixedHeight * 0.03,
-                            ),
-                            decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: Colors.black12,
-                                ),
-                                border: InputBorder.none,
-                                // border: OutlineInputBorder(
-                                //   borderRadius: BorderRadius.circular(5),
-                                //   borderSide: const BorderSide(),
-                                // ),
-                                contentPadding: EdgeInsets.only(
-                                    left: FixedHeight * 0.02,
-                                    bottom: FixedHeight * 0.01,
-                                    top: FixedHeight * 0.01,
-                                    right: FixedHeight * 0.02),
-                                hintText: "Enter Vehicle No."),
-                          ),
+                          child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                decoration: InputDecoration(hintText: 'State'),
+                                controller: _typeAheadController,
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                return await StateService.getSuggestions(
+                                    pattern);
+                              },
+                              transitionBuilder:
+                                  (context, suggestionsBox, controller) {
+                                return suggestionsBox;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                vehicle_detail(
+                                                    token: '${widget.token}',
+                                                    id: '${statess_id}')));
+                                  },
+                                  child: ListTile(
+                                    title: Text(suggestion),
+                                  ),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                _typeAheadController.text = suggestion;
+                              }),
                         ),
                         IconButton(
                           onPressed: () {
@@ -628,5 +679,13 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
     );
+  }
+}
+
+class StateService {
+  static List<String> getSuggestions(String query) {
+    Set<String> matches = Set<String>.from(statess);
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches.toList();
   }
 }

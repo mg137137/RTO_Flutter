@@ -22,6 +22,7 @@ class Catogerywise_Book extends StatefulWidget {
 }
 
 class _Catogerywise_BookState extends State<Catogerywise_Book> {
+  TextEditingController _searchController = TextEditingController();
   List<String> _dropdownItems = [
     'RRS',
     'TTO',
@@ -32,6 +33,26 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
   String _response = '';
   SharedPreferences? _prefs;
   List<dynamic> _booklistdetail = [];
+
+  void _runfilter(String enterkeyword) {
+    if (enterkeyword.isEmpty) {
+      _result = _booklistdetail;
+    } else {
+      // result=_booklistdetail.where((user) => user['vehicleRegistrationNumber'].toLowerCase().contains(enterkeyword.toLowerCase().toList();))
+      _result = _booklistdetail
+          .where((user) => user['vehicleRegistrationNumber']
+              .toUpperCase()
+              .contains(enterkeyword.toUpperCase()))
+          .toList();
+      print(_result.length);
+    }
+    setState(() {
+      _foundvehiclenumber = _result;
+    });
+  }
+
+  List<dynamic> _result = [];
+  List<dynamic> _foundvehiclenumber = [];
   // List<dynamic> _vehicleid = [];
   static int value = 0;
   int length = 0;
@@ -61,6 +82,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
           //     (jsonDecode(response.body)['vehicleRegistrationNumber']);
 
           _booklistdetail = json.decode(response.body);
+          _foundvehiclenumber = _booklistdetail;
           // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
           length = _booklistdetail.length.toInt();
         });
@@ -82,6 +104,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
           //     (jsonDecode(response.body)['vehicleRegistrationNumber']);
 
           _booklistdetail = json.decode(response.body);
+          _foundvehiclenumber = _booklistdetail;
           // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
           length = _booklistdetail.length.toInt();
         });
@@ -103,6 +126,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
           //     (jsonDecode(response.body)['vehicleRegistrationNumber']);
 
           _booklistdetail = json.decode(response.body);
+          _foundvehiclenumber = _booklistdetail;
           // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
           length = _booklistdetail.length.toInt();
         });
@@ -240,6 +264,13 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
                           height: 40,
                           width: 160,
                           child: TextFormField(
+                            controller: _searchController,
+                            onTap: () {
+                              print('object');
+                            },
+                            onChanged: (value) {
+                              _runfilter(value);
+                            },
                             //controller: _phoneController,
                             // cursorColor: Colors.black,
                             keyboardType: TextInputType.text,
@@ -306,12 +337,13 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _booklistdetail[index]['vehicleRegistrationNumber'],
+                          _foundvehiclenumber[index]
+                              ['vehicleRegistrationNumber'],
                         ),
                         ElevatedButton.icon(
                           onPressed: () async {
-                            final String id =
-                                _booklistdetail[index]['vehicleRegistrationId'];
+                            final String id = _foundvehiclenumber[index]
+                                ['vehicleRegistrationId'];
 
                             // final url = Uri.parse(
                             //     'http://192.168.0.104:8003/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id');
@@ -358,7 +390,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
                   ),
                 );
               },
-              itemCount: _booklistdetail.length,
+              itemCount: _foundvehiclenumber.length,
             ),
           ),
         ),

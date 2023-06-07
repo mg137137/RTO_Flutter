@@ -22,6 +22,7 @@ class _Delar_DetailState extends State<Delar_Detail> {
   Map<String, dynamic> data = {};
   Map<String, dynamic> testing = {};
   Map<String, dynamic> expandata = {};
+  bool isDataAvailable = false;
 
   Future<void> getData() async {
     final response = await http.get(
@@ -37,6 +38,7 @@ class _Delar_DetailState extends State<Delar_Detail> {
         print('This is a expanded Delat Detail :- ' + '$expandata');
 
         testing = data['DealerCounterdetails'];
+        isDataAvailable = true;
         print('The response data is ' + "$testing");
       });
     } else {
@@ -221,9 +223,9 @@ class _Delar_DetailState extends State<Delar_Detail> {
                           );
                         }
                       },
-                      itemCount: data.length +
-                          testing.length -
-                          1, // Add 1 for the first index and the static buttons
+                      itemCount: isDataAvailable == true
+                          ? data.length + testing.length - 1
+                          : 0, // Add 1 for the first index and the static buttons
                       // Add 6 for the static buttons
                     ),
                   ),
