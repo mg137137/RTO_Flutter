@@ -18,6 +18,7 @@ class vehicle_detail extends StatefulWidget {
 }
 
 class _vehicle_detailState extends State<vehicle_detail> {
+  bool hasData = false;
   Map<String, dynamic> data = {};
   Future<void> getData() async {
     final response = await http.get(
@@ -27,6 +28,7 @@ class _vehicle_detailState extends State<vehicle_detail> {
     );
 
     if (response.statusCode == 200) {
+      hasData = true;
       setState(() {
         data = jsonDecode(response.body);
       });
@@ -87,23 +89,6 @@ class _vehicle_detailState extends State<vehicle_detail> {
       borderRadius: BorderRadius.circular(10),
     );
 
-    var arraybox_title = [
-      'vehicle detail',
-      'vehicle buyer detail',
-      'vehicle insurance detail',
-      'vehicle insurance detail',
-    ];
-    var arrayname_title = [
-      'Name',
-      'Name',
-      'Name',
-      'Name',
-    ];
-    var arrayname_data = ['mihie', 'mihir', 'gandhi', 'hello'];
-
-    var arrayaddresh_title = ['addresh', 'addresh', 'addresh', 'addresh'];
-    var arrayaddresh_data = ['rajkot', 'junagadh', 'jamnagar', 'ahemdabad'];
-
     return Scaffold(
       body: SingleChildScrollView(
           child: SafeArea(
@@ -160,9 +145,10 @@ class _vehicle_detailState extends State<vehicle_detail> {
                   ],
                 ),
               ),
-              new Expanded(
+              Expanded(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 7, 0, 10),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -175,67 +161,94 @@ class _vehicle_detailState extends State<vehicle_detail> {
                       var value = data[key];
                       print(value.toString());
 
-                      return Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(4, 5),
-                                  blurRadius: 10,
-                                  color: Colors.black.withOpacity(0.3),
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: EdgeInsets.fromLTRB(20, 40, 20, 10),
-                            width: MediaQuery.of(context).size.width,
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              margin: EdgeInsets.fromLTRB(20, 45, 0, 0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    for (var entry in value.entries)
-                                      Text(
-                                        entry.key +
-                                            ' :- ' +
-                                            entry.value.toString(),
-                                        style: TextStyle(fontSize: 15),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                  ],
+                      if (index == data.length) {
+                        // Render the button at the end of the list
+                        return ElevatedButton(
+                          onPressed: () {
+                            // Handle button press
+                          },
+                          child: Text('Your Button'),
+                        );
+                      } else {
+                        // Render the data items
+                        var key = data.keys.elementAt(index);
+                        var value = data[key];
+                        print(value.toString());
+
+                        return Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(4, 5),
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.3),
+                                  ),
+                                ],
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.fromLTRB(20, 40, 20, 10),
+                              width: MediaQuery.of(context).size.width,
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                margin: EdgeInsets.fromLTRB(20, 45, 0, 0),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      for (var entry in value.entries)
+                                        Text(
+                                          entry.key +
+                                              ' :- ' +
+                                              entry.value.toString(),
+                                          style: TextStyle(fontSize: 15),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            top: -10,
-                            left: 30,
-                            right: 30,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 350,
-                              margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                              decoration: Bluebox_Decoration,
-                              child: Text(
-                                key,
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                            Positioned(
+                              top: -10,
+                              left: 30,
+                              right: 30,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                width: 350,
+                                margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                decoration: Bluebox_Decoration,
+                                child: Text(
+                                  key,
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.black),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      );
+                            )
+                          ],
+                        );
+                      }
                     },
                     itemCount: data.length,
                   ),
                 ),
               ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 10, 20, 50),
+                child: hasData == true
+                    ? ElevatedButton(
+                        onPressed: () {
+                          // Handle button press
+                        },
+                        child: Text('Your Button'),
+                      )
+                    : Text('data'),
+              )
             ],
           ),
         ),

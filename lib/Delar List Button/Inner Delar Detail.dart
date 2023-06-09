@@ -61,9 +61,10 @@ class _Inner_Delar_DetailState extends State<Inner_Delar_Detail> {
     _prefs = await SharedPreferences.getInstance();
     final response = await http.get(
       Uri.parse(
-          'http://rtoagentdms.com/api/mobileApprouter/getBookbyDealerId?d${widget.delar_id}&apiNumber=${widget.id}'),
+          'http://rtoagentdms.com/api/mobileApprouter/getBookbyDealerId?dealerId=Dealer_1684852413669_li0dmin9&apiNumber=0'),
       headers: {'Authorization': 'Bearer ${widget.token}'},
     );
+    //'http://rtoagentdms.com/api/mobileApprouter/getBookbyDealerId?d${widget.delar_id}&apiNumber=${widget.id}'
     if (response.statusCode == 200) {
       setState(() {
         bool chakedu = true;

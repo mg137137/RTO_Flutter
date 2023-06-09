@@ -224,7 +224,7 @@ class _Delar_DetailState extends State<Delar_Detail> {
                                     color: Colors.blue,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        int give_to_api_id = index;
+                                        int give_to_api_id = index - 1;
                                         print(index);
                                         print(widget.id);
                                         Navigator.push(
@@ -233,7 +233,8 @@ class _Delar_DetailState extends State<Delar_Detail> {
                                                 builder: (context) =>
                                                     Inner_Delar_Detail(
                                                       token: '${widget.token}',
-                                                      delar_id: '${widget.id}',
+                                                      delar_id:
+                                                          'Dealer_1684852413669_li0dmin9',
                                                       id: give_to_api_id,
                                                     )));
                                       },
