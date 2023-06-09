@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Api Detail/api_Configration_file.dart';
+import '../Api Detail/API_Detail.dart';
 import '../Dashboard.dart';
 import 'Delar Detail.dart';
 

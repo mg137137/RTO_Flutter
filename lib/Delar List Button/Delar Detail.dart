@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rto_flutter/Delar%20List%20Button/Inner%20Delar%20Detail.dart';
 
-import '../Api Detail/api_Configration_file.dart';
+import '../Api Detail/API_Detail.dart';
 
 late final String localtoken;
 
@@ -29,7 +29,7 @@ class _Delar_DetailState extends State<Delar_Detail> {
   Future<void> getData() async {
     final response = await http.get(
       Uri.parse(
-          'http://$api_id/dealerrouter/getDealerDetailsById?dealerId=${widget.id}'),
+          'http://$API_Base/dealerrouter/getDealerDetailsById?dealerId=${widget.id}'),
       headers: {'Authorization': 'Bearer ${widget.token}'},
     );
 

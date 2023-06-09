@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../Api Detail/api_Configration_file.dart';
+import '../Api Detail/API_Detail.dart';
 
 late final String localtoken;
 
@@ -26,7 +26,7 @@ class _testing_delarState extends State<testing_delar> {
   Future<void> getData() async {
     final response = await http.get(
       Uri.parse(
-          'http://$api_id/dealerrouter/getDealerDetailsById?dealerId=${widget.id}'),
+          'http://$API_Base/dealerrouter/getDealerDetailsById?dealerId=${widget.id}'),
       headers: {'Authorization': 'Bearer ${widget.token}'},
     );
 

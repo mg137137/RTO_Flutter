@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:rto_flutter/loginpage.dart';
+import 'package:rto_flutter/Screens/Login%20Screnn/Login_Screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Login_Page(),
+      home: Login_Screen(),
       debugShowCheckedModeBanner: false,
     );
   }

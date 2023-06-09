@@ -1,16 +1,16 @@
-class MVC_LOGIN {
+class MVC_Login_Screen {
   String? MVC_Variable_AgentId;
   int? MVC_Variable_IsAdminRights;
   String? MVC_Variable_UserName;
   String? MVC_Variable_Token;
 
-  MVC_LOGIN(
+  MVC_Login_Screen(
       {this.MVC_Variable_AgentId,
       this.MVC_Variable_IsAdminRights,
       this.MVC_Variable_UserName,
       this.MVC_Variable_Token});
 
-  MVC_LOGIN.fromJson(Map<String, dynamic> json) {
+  MVC_Login_Screen.fromJson(Map<String, dynamic> json) {
     MVC_Variable_AgentId = json['agentId'];
     MVC_Variable_IsAdminRights = json['isAdminrights'];
     MVC_Variable_UserName = json['userName'];

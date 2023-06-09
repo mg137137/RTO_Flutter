@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:rto_flutter/Six_Boxes/vehicle_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Api Detail/api_Configration_file.dart';
+import '../Api Detail/API_Detail.dart';
 import '../Dashboard.dart';
 
 late String id1;
@@ -71,7 +71,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
       _prefs = await SharedPreferences.getInstance();
       final response = await http.get(
         Uri.parse(
-            'http://$api_id/mobileApprouter/getBookList?searchWord=&workStatus=&workCategory=1'),
+            'http://$API_Base/mobileApprouter/getBookList?searchWord=&workStatus=&workCategory=1'),
         headers: {'Authorization': 'Bearer ${widget.token}'},
       );
       if (response.statusCode == 200) {
@@ -93,7 +93,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
       _prefs = await SharedPreferences.getInstance();
       final response = await http.get(
         Uri.parse(
-            'http://$api_id/mobileApprouter/getBookList?searchWord=&workStatus=&workCategory=2'),
+            'http://$API_Base/mobileApprouter/getBookList?searchWord=&workStatus=&workCategory=2'),
         headers: {'Authorization': 'Bearer ${widget.token}'},
       );
       if (response.statusCode == 200) {
@@ -115,7 +115,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
       _prefs = await SharedPreferences.getInstance();
       final response = await http.get(
         Uri.parse(
-            'http://$api_id/mobileApprouter/getBookList?searchWord=&workStatus=&workCategory=3'),
+            'http://$API_Base/mobileApprouter/getBookList?searchWord=&workStatus=&workCategory=3'),
         headers: {'Authorization': 'Bearer ${widget.token}'},
       );
       if (response.statusCode == 200) {
@@ -352,7 +352,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
 
                             final response = await http.get(
                               Uri.parse(
-                                  'http://$api_id/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id'),
+                                  'http://$API_Base/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id'),
                               headers: {
                                 'Authorization': 'Bearer ${widget.token}'
                               },

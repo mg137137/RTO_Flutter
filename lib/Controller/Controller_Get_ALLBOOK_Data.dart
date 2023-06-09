@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:rto_flutter/Api%20Detail/api_Configration_file.dart';
+import 'package:rto_flutter/Api%20Detail/API_Detail.dart';
 
 import '../MVC/MVC VehicleNumber With ID.dart';
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Api Detail/api_Configration_file.dart';
+import '../Api Detail/API_Detail.dart';
 import '../Dashboard.dart';
 import '../Six_Boxes/All_Book.dart';
 import '../Six_Boxes/vehicle_detail.dart';
@@ -298,7 +298,7 @@ class _Inner_Delar_DetailState extends State<Inner_Delar_Detail> {
 
                                       final response = await http.get(
                                         Uri.parse(
-                                            'http://$api_id/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id'),
+                                            'http://$API_Base/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id'),
                                         headers: {
                                           'Authorization':
                                               'Bearer ${widget.token}'

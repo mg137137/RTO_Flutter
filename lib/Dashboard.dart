@@ -7,13 +7,13 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'package:rto_flutter/Controller/Controller_Get_ALLBOOK_Data.dart';
 import 'package:rto_flutter/MVC/MVC%20VehicleNumber%20With%20ID.dart';
+import 'package:rto_flutter/Screens/Login%20Screnn/Login_Screen.dart';
 import 'package:rto_flutter/Six_Boxes/All_Book.dart';
 import 'package:rto_flutter/Six_Boxes/Categorywise_Book.dart';
 import 'package:rto_flutter/Six_Boxes/Checkbook_Status.dart';
-import 'package:rto_flutter/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Api Detail/api_Configration_file.dart';
+import 'API Detail/API_Detail.dart';
 import 'Delar List Button/Delar List Home.dart';
 import 'Six_Boxes/vehicle_detail.dart';
 
@@ -38,6 +38,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  bool chakedu1 = false;
+  bool chakedu2 = false;
+  bool chakedu3 = false;
+  bool chakedu4 = false;
+  bool chakedu5 = false;
   late MVC_VehicleNumber_With_ID Local_VehicleNumber_And_Id;
   final controller_get_allbook_data = Controller_Get_Allbook_Data();
   Map<String, dynamic> data = {};
@@ -75,6 +80,7 @@ class _DashboardState extends State<Dashboard> {
       searchDataList = delar_list_result;
       for (var i = 0; i < searchDataList.length; i++) {
         setState(() {
+          chakedu1 = true;
           statess.add(searchDataList[i].MVC_Variable_VehcleNumber!);
         });
       }
@@ -224,7 +230,7 @@ class _DashboardState extends State<Dashboard> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Login_Page()),
+                                        builder: (context) => Login_Screen()),
                                   );
                                 }
                               } else {
@@ -420,13 +426,17 @@ class _DashboardState extends State<Dashboard> {
                                   color: Colors.black,
                                   fontSize: FixedHeight * 0.03),
                             ),
-                            Text(
-                              '$TotalBookNumber',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: FixedHeight * 0.03),
-                            ),
+                            chakedu1
+                                ? Text(
+                                    '$TotalBookNumber',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: FixedHeight * 0.03),
+                                  )
+                                : Container(
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator())
                           ],
                         ),
                       ),
@@ -442,71 +452,86 @@ class _DashboardState extends State<Dashboard> {
                             height: FixedHeight * 0.11,
                             width: FixedWidth * 0.25,
                             child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Checkbook_Status(
-                                            token: '$stoken',
-                                            dopdown_name: 'Pending',
-                                            filter: false,
-                                            titletext: 'Pending Books',
-                                          )),
-                                );
-                              },
-                              child: Text(
-                                '$Pendingbook' + '\nPending' + '\nDocuments',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Checkbook_Status(
+                                              token: '$stoken',
+                                              dopdown_name: 'Pending',
+                                              filter: false,
+                                              titletext: 'Pending Books',
+                                            )),
+                                  );
+                                },
+                                child: chakedu1
+                                    ? Text(
+                                        textAlign: TextAlign.center,
+                                        '$Pendingbook' + '\nPending',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Container(
+                                        alignment: Alignment.center,
+                                        child: CircularProgressIndicator())),
                           ),
                           Container(
                             height: FixedHeight * 0.11,
                             width: FixedWidth * 0.25,
                             decoration: sixboxdecoration,
                             child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Checkbook_Status(
-                                            token: '$stoken',
-                                            dopdown_name: 'Appointment',
-                                            filter: false,
-                                            titletext: 'Appointment Books',
-                                          )),
-                                );
-                              },
-                              child: Text(
-                                '$Appointment' +
-                                    '\nAppoitment' +
-                                    '\nVehicleDetail',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Checkbook_Status(
+                                              token: '$stoken',
+                                              dopdown_name: 'Appointment',
+                                              filter: false,
+                                              titletext: 'Appointment Books',
+                                            )),
+                                  );
+                                },
+                                child: chakedu1
+                                    ? Text(
+                                        textAlign: TextAlign.center,
+                                        '$Appointment' + '\nAppoitment',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Container(
+                                        alignment: Alignment.center,
+                                        child: CircularProgressIndicator())),
                           ),
                           Container(
+                            alignment: Alignment.center,
                             height: FixedHeight * 0.11,
                             width: FixedWidth * 0.25,
                             decoration: sixboxdecoration,
                             child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Checkbook_Status(
-                                            token: '$stoken',
-                                            dopdown_name: 'Complete',
-                                            filter: false,
-                                            titletext: 'Complete Books',
-                                          )),
-                                );
-                              },
-                              child: Text(
-                                '$Complete' + '\nComplete' + '\nTTO Book',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Checkbook_Status(
+                                              token: '$stoken',
+                                              dopdown_name: 'Complete',
+                                              filter: false,
+                                              titletext: 'Complete Books',
+                                            )),
+                                  );
+                                },
+                                child: chakedu1
+                                    ? Text(
+                                        '$Complete' + '\nComplete',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : Container(
+                                        alignment: Alignment.center,
+                                        child: CircularProgressIndicator())),
                           )
                         ],
                       ),

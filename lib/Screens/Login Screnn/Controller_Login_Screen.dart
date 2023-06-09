@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:rto_flutter/MVC/MVC_LOGIN.dart';
+import 'package:rto_flutter/Screens/Login%20Screnn/MVC_Login_Screen.dart';
 
-import '../Api Detail/api_Configration_file.dart';
+import '../../Api Detail/API_Detail.dart';
 
-class Controller_Post_Login {
+class Controller_Login_Screen {
   Future<dynamic> LoginUser(Map<String, dynamic> loginUserData) async {
-    var url = Uri.parse(api_login);
-    //String bodyData = jsonEncode(loginUserData);
+    var url = Uri.parse(API_Login_Screen);
     final response = await http.post(url, body: loginUserData);
     print('');
     print('Response Status: ${response.statusCode}');
@@ -16,7 +15,7 @@ class Controller_Post_Login {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      MVC_LOGIN loginData = MVC_LOGIN.fromJson(data);
+      MVC_Login_Screen loginData = MVC_Login_Screen.fromJson(data);
       return loginData;
     } else {
       var errorResponse = jsonDecode(response.body);
