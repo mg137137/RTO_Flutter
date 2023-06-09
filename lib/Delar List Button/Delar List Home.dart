@@ -20,6 +20,7 @@ class Delar_List_home extends StatefulWidget {
 }
 
 class _Delar_List_homeState extends State<Delar_List_home> {
+  bool chakedu = false;
   bool isLoggedIn = false;
   String _response = '';
   SharedPreferences? _prefs;
@@ -40,6 +41,7 @@ class _Delar_List_homeState extends State<Delar_List_home> {
     );
     if (response.statusCode == 200) {
       setState(() {
+        chakedu = true;
         _response = response.body;
 
         // _vehiclenumber =
@@ -209,75 +211,79 @@ class _Delar_List_homeState extends State<Delar_List_home> {
             ],
           ),
         ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(4, 5),
-                        blurRadius: 1,
-                        color: Colors.black.withOpacity(0.3),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  height: 55,
-                  width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Delar_Detail(
-                                  id: _booklistdetail[index]['dealerId'],
-                                  token: widget.token,
-                                )),
+        chakedu
+            ? Expanded(
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(4, 5),
+                              blurRadius: 1,
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Delar_Detail(
+                                        id: _booklistdetail[index]['dealerId'],
+                                        token: widget.token,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            // margin: EdgeInsets.fromLTRB(10, 45, 5, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _booklistdetail[index]['dealerFirmName'],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    // fontSize: FixedHeight / 51,
+
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  _booklistdetail[index]['dealerDisplayName'],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    // fontSize: FixedHeight / 51,
+                                  ),
+                                ),
+
+                                // ElevatedButton.icon(
+                                //   onPressed: () {},
+                                //   icon: const Icon(Icons.remove_red_eye_outlined),
+                                //   label: const Text('View'),
+                                // )
+                              ],
+                            ),
+                          ),
+                        ),
                       );
                     },
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      // margin: EdgeInsets.fromLTRB(10, 45, 5, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _booklistdetail[index]['dealerFirmName'],
-                            style: TextStyle(
-                              color: Colors.black,
-                              // fontSize: FixedHeight / 51,
-
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            _booklistdetail[index]['dealerDisplayName'],
-                            style: TextStyle(
-                              color: Colors.black,
-                              // fontSize: FixedHeight / 51,
-                            ),
-                          ),
-
-                          // ElevatedButton.icon(
-                          //   onPressed: () {},
-                          //   icon: const Icon(Icons.remove_red_eye_outlined),
-                          //   label: const Text('View'),
-                          // )
-                        ],
-                      ),
-                    ),
+                    itemCount: _booklistdetail.length,
                   ),
-                );
-              },
-              itemCount: _booklistdetail.length,
-            ),
-          ),
-        ),
+                ),
+              )
+            : Container(
+                margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                child: Center(child: CircularProgressIndicator()))
       ],
     ));
   }

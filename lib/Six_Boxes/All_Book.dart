@@ -20,6 +20,7 @@ class All_Book extends StatefulWidget {
 }
 
 class _All_BookState extends State<All_Book> {
+  bool chakedu = false;
   TextEditingController _searchController = TextEditingController();
   bool isLoggedIn = false;
 
@@ -62,6 +63,7 @@ class _All_BookState extends State<All_Book> {
     );
     if (response.statusCode == 200) {
       setState(() {
+        chakedu = true;
         _response = response.body;
 
         // _vehiclenumber =
@@ -148,47 +150,6 @@ class _All_BookState extends State<All_Book> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Container(
-                        //   width: 100,
-                        //   height: 40,
-                        //   alignment: Alignment.center,
-                        //   decoration: BoxDecoration(
-                        //       gradient: const LinearGradient(
-                        //         begin: Alignment.topRight,
-                        //         end: Alignment.bottomLeft,
-                        //         colors: [
-                        //           Colors.blue,
-                        //           Colors.lightBlueAccent,
-                        //         ],
-                        //       ),
-                        //       borderRadius: BorderRadius.circular(10),
-                        //       color: Colors.white),
-                        //   child: DropdownButtonHideUnderline(
-                        //     child: DropdownButton(
-                        //       icon: const Icon(Icons.filter_list),
-                        //       value: "Filter 1",
-                        //       items: const [
-                        //         //add items in the dropdown
-                        //         DropdownMenuItem(
-                        //             value: "Filter 1", child: Text("Filter 1")),
-                        //
-                        //         DropdownMenuItem(
-                        //           value: "Filter 2",
-                        //           child: Text("Filter 2"),
-                        //         ),
-                        //
-                        //         DropdownMenuItem(
-                        //           value: "Filter 3",
-                        //           child: Text("Filter 3"),
-                        //         )
-                        //       ],
-                        //       onChanged: (value) {
-                        //         //get value when changed
-                        //         // print("You selected $value");
-                        //       },
-                        //     ),
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 40,
                           width: 160,
@@ -239,90 +200,97 @@ class _All_BookState extends State<All_Book> {
             ],
           ),
         ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(4, 5),
-                        blurRadius: 1,
-                        color: Colors.black.withOpacity(0.3),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  height: 55,
-                  width: MediaQuery.of(context).size.width,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    // margin: EdgeInsets.fromLTRB(10, 45, 5, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _foundvehiclenumber[index]
-                              ['vehicleRegistrationNumber'],
+        chakedu
+            ? Expanded(
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(4, 5),
+                              blurRadius: 1,
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            final String id = _foundvehiclenumber[index]
-                                ['vehicleRegistrationId'];
+                        margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          // margin: EdgeInsets.fromLTRB(10, 45, 5, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _foundvehiclenumber[index]
+                                    ['vehicleRegistrationNumber'],
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () async {
+                                  final String id = _foundvehiclenumber[index]
+                                      ['vehicleRegistrationId'];
 
-                            // final url = Uri.parse(
-                            //     'http://192.168.0.104:8003/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id');
-                            //
-                            // final response = await http.get(url);
+                                  // final url = Uri.parse(
+                                  //     'http://192.168.0.104:8003/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id');
+                                  //
+                                  // final response = await http.get(url);
 
-                            final response = await http.get(
-                              Uri.parse(
-                                  'http://$api_id/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id'),
-                              headers: {
-                                'Authorization': 'Bearer ${widget.token}'
-                              },
-                            );
+                                  final response = await http.get(
+                                    Uri.parse(
+                                        'http://$api_id/vehicleRegistrationrouter/getVehicleRegistrationDetailsById?vehicleRegistrationId=$id'),
+                                    headers: {
+                                      'Authorization': 'Bearer ${widget.token}'
+                                    },
+                                  );
 
-                            if (response.statusCode == 200) {
-                              // If the server did return a 200 OK response, parse the JSON.
-                              final responseData = json.decode(response.body);
-                              id1 = id;
-                              print(responseData);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => vehicle_detail(
-                                          token: widget.token,
-                                          id: '$id',
-                                        )),
-                              );
-                              return responseData;
-                            } else {
-                              // If the server did not return a 200 OK response, throw an error.
-                              throw Exception('Failed to load data');
-                            }
-                            //
-                            // print(id);
-                            // final responseData = await fetchData(id);
-                            // // Use the response data as needed
-                            // print(responseData);
-                          },
-                          icon: const Icon(Icons.remove_red_eye_outlined),
-                          label: const Text('View'),
-                        )
-                      ],
-                    ),
+                                  if (response.statusCode == 200) {
+                                    // If the server did return a 200 OK response, parse the JSON.
+                                    final responseData =
+                                        json.decode(response.body);
+                                    id1 = id;
+                                    print(responseData);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => vehicle_detail(
+                                                token: widget.token,
+                                                id: '$id',
+                                              )),
+                                    );
+                                    return responseData;
+                                  } else {
+                                    // If the server did not return a 200 OK response, throw an error.
+                                    throw Exception('Failed to load data');
+                                  }
+                                  //
+                                  // print(id);
+                                  // final responseData = await fetchData(id);
+                                  // // Use the response data as needed
+                                  // print(responseData);
+                                },
+                                icon: const Icon(Icons.remove_red_eye_outlined),
+                                label: const Text('View'),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: _foundvehiclenumber.length,
                   ),
-                );
-              },
-              itemCount: _foundvehiclenumber.length,
-            ),
-          ),
-        ),
+                ),
+              )
+            : Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
+                child: CircularProgressIndicator(),
+              )
       ],
     ));
   }

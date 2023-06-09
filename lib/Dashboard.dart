@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:darq/darq.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
-import 'package:rto_flutter/Delar%20List%20Button/testing%20delar%20detail.dart';
+import 'package:rto_flutter/Controller/Controller_Get_ALLBOOK_Data.dart';
+import 'package:rto_flutter/MVC/MVC%20VehicleNumber%20With%20ID.dart';
 import 'package:rto_flutter/Six_Boxes/All_Book.dart';
 import 'package:rto_flutter/Six_Boxes/Categorywise_Book.dart';
 import 'package:rto_flutter/Six_Boxes/Checkbook_Status.dart';
@@ -16,7 +18,9 @@ import 'Delar List Button/Delar List Home.dart';
 import 'Six_Boxes/vehicle_detail.dart';
 
 List<String> statess = [];
+List<MVC_VehicleNumber_With_ID> searchDataList = [];
 List<String> statess_id = [];
+var findingid;
 bool statess_check = false;
 bool Logout = false;
 String name = '';
@@ -34,6 +38,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  late MVC_VehicleNumber_With_ID Local_VehicleNumber_And_Id;
+  final controller_get_allbook_data = Controller_Get_Allbook_Data();
   Map<String, dynamic> data = {};
   List<dynamic> _booklistdetail = [];
 
@@ -61,35 +67,20 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> _AllBook() async {
-    _prefs = await SharedPreferences.getInstance();
-    final response = await http.get(
-      Uri.parse('http://$api_id/mobileApprouter/getBookList'),
-      headers: {'Authorization': 'Bearer ${widget.token}'},
-    );
-    if (response.statusCode == 200) {
-      setState(() {
-        _response = response.body;
-        //
-        // statess = (jsonDecode(response.body)['vehicleRegistrationNumber'])
-        //     .toString() as List<String>;
-        // print('The statesss is :-' + '$statess');
+    dynamic delar_list_result =
+        await controller_get_allbook_data.AllBookData('${widget.token}');
 
-        _booklistdetail = json.decode(response.body);
-        setState(() {});
-
-        for (var i = 0; i < _booklistdetail.length; i++) {
-          statess.add(_booklistdetail[i]['vehicleRegistrationNumber']);
-          statess_id.add(_booklistdetail[i]['vehicleRegistrationId']);
-        }
-        // List<String> statess = _booklistdetail;
-
-        print('The statesss is :-' + '$statess');
-        // _foundvehiclenumber = _booklistdetail;
-
-        // _vehicleid = (jsonDecode(response.body)['vehicleRegistrationNumber']);
-        // length = _booklistdetail.length.toInt();
-      });
-      _prefs?.setString('response', _response);
+    if (delar_list_result is List<MVC_VehicleNumber_With_ID>) {
+      print(delar_list_result.length);
+      searchDataList = delar_list_result;
+      for (var i = 0; i < searchDataList.length; i++) {
+        setState(() {
+          statess.add(searchDataList[i].MVC_Variable_VehcleNumber!);
+        });
+      }
+    } else {
+      var errorResponse = delar_list_result;
+      print('THE EROOR RESPONSE IS ' + errorResponse);
     }
   }
 
@@ -326,10 +317,27 @@ class _DashboardState extends State<Dashboard> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
+                          child: IconButton(
+                            onPressed: () {
+                              searchdata = _vehiclesearch.text;
+
+                              SnackBar snackbar = SnackBar(
+                                content: Text(searchdata),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+                            },
+                            icon: const Icon(Icons.search),
+                          ),
+                        ),
+                        Container(
                           width: FixedWidth * 0.7,
                           child: TypeAheadField(
                               textFieldConfiguration: TextFieldConfiguration(
-                                decoration: InputDecoration(hintText: 'State'),
+                                decoration: InputDecoration(
+                                    focusedBorder: InputBorder.none,
+                                    border: InputBorder.none,
+                                    hintText: 'Enter Vehicle Number'),
                                 controller: _typeAheadController,
                               ),
                               suggestionsCallback: (pattern) async {
@@ -343,13 +351,30 @@ class _DashboardState extends State<Dashboard> {
                               itemBuilder: (context, suggestion) {
                                 return InkWell(
                                   onTap: () {
+                                    var findigvariable = suggestion;
+                                    print(findigvariable);
+                                    var list = searchDataList;
+
+                                    for (var item in list) {
+                                      print(item.MVC_Variable_VehcleNumber);
+                                      if (findigvariable ==
+                                          item.MVC_Variable_VehcleNumber) {
+                                        setState(() {
+                                          findingid =
+                                              item.MVC_Variable_VehicleID;
+                                          print(findingid);
+                                        });
+                                      }
+                                    }
+
+                                    // var result = list.select((element, index) => element.MVC_Variable_VehicleID).where((element) => (i)=>)
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 vehicle_detail(
                                                     token: '${widget.token}',
-                                                    id: '${statess_id}')));
+                                                    id: '$findingid')));
                                   },
                                   child: ListTile(
                                     title: Text(suggestion),
@@ -360,18 +385,6 @@ class _DashboardState extends State<Dashboard> {
                                 _typeAheadController.text = suggestion;
                               }),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            searchdata = _vehiclesearch.text;
-
-                            SnackBar snackbar = SnackBar(
-                              content: Text(searchdata),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackbar);
-                          },
-                          icon: const Icon(Icons.search),
-                        )
                       ],
                     ),
                   ),
@@ -523,27 +536,27 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                           ),
-                          Container(
-                            height: FixedHeight * 0.11,
-                            width: FixedWidth * 0.25,
-                            decoration: sixboxdecoration,
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => testing_delar(
-                                            token: '$stoken',
-                                            id: 'Dealer_1684852413669_li0dmin9',
-                                          )),
-                                );
-                              },
-                              child: const Text(
-                                'TESTING BOOK',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   height: FixedHeight * 0.11,
+                          //   width: FixedWidth * 0.25,
+                          //   decoration: sixboxdecoration,
+                          //   child: TextButton(
+                          //     onPressed: () {
+                          //       Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) => testing_delar(
+                          //                   token: '$stoken',
+                          //                   id: 'Dealer_1684852413669_li0dmin9',
+                          //                 )),
+                          //       );
+                          //     },
+                          //     child: const Text(
+                          //       'TESTING BOOK',
+                          //       style: TextStyle(fontWeight: FontWeight.bold),
+                          //     ),
+                          //   ),
+                          // ),
                           Container(
                             height: FixedHeight * 0.11,
                             width: FixedWidth * 0.25,
@@ -684,6 +697,14 @@ class _DashboardState extends State<Dashboard> {
 
 class StateService {
   static List<String> getSuggestions(String query) {
+    var vehicalNumberList = searchDataList
+        .select((element, index) => element.MVC_Variable_VehcleNumber!)
+        .toList();
+
+    List<String> returnData = vehicalNumberList;
+    returnData.retainWhere(
+        (element) => element.toLowerCase().contains(query.toLowerCase()));
+    return returnData.toList();
     Set<String> matches = Set<String>.from(statess);
     matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     return matches.toList();
