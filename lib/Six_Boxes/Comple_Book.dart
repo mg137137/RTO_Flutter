@@ -6,7 +6,7 @@ import 'package:rto_flutter/Six_Boxes/vehicle_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Api Detail/API_Detail.dart';
-import '../Dashboard.dart';
+import '../Screens/Dashboard Screen/Dashboard_Screen.dart';
 
 late final String id1;
 late final String localtoken;
@@ -82,7 +82,7 @@ class _tto_BooklistState extends State<tto_Booklist> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Dashboard(
-                                      token: '$stoken',
+                                      token: '${widget.token}',
                                     )),
                           );
                         },

@@ -6,10 +6,7 @@ import 'package:rto_flutter/Six_Boxes/vehicle_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Api Detail/API_Detail.dart';
-import '../Dashboard.dart';
-
-late String id1;
-late final String localtoken;
+import '../Screens/Dashboard Screen/Dashboard_Screen.dart';
 
 class Catogerywise_Book extends StatefulWidget {
   final String token;
@@ -165,7 +162,7 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Dashboard(
-                                      token: '$stoken',
+                                      token: '${widget.token}',
                                     )),
                           );
                         },
@@ -361,7 +358,6 @@ class _Catogerywise_BookState extends State<Catogerywise_Book> {
                             if (response.statusCode == 200) {
                               // If the server did return a 200 OK response, parse the JSON.
                               final responseData = json.decode(response.body);
-                              id1 = id;
                               print(responseData);
                               Navigator.push(
                                 context,

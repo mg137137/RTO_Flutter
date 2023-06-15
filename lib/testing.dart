@@ -1,134 +1,83 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+/// Flutter code sample for [RefreshIndicator].
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+void main() => runApp(const RefreshIndicatorExampleApp());
+
+class RefreshIndicatorExampleApp extends StatelessWidget {
+  const RefreshIndicatorExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: GFG(),
+    return const MaterialApp(
+      home: RefreshIndicatorExample(),
     );
   }
 }
 
-// This is the widget that will be shown
-// as the homepage of your application.
-class GFG extends StatefulWidget {
-  const GFG({Key? key}) : super(key: key);
+class RefreshIndicatorExample extends StatelessWidget {
+  const RefreshIndicatorExample({super.key});
 
-  @override
-  State<GFG> createState() => _GFGState();
-}
-
-class _GFGState extends State<GFG> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "GeeksForGeeks",
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // method to show the search bar
-              showSearch(
-                  context: context,
-                  // delegate to customize the search bar
-                  delegate: CustomSearchDelegate());
-            },
-            icon: const Icon(Icons.search),
-          )
-        ],
+        title: const Text('RefreshIndicator Sample'),
       ),
-    );
-  }
-}
-
-class CustomSearchDelegate extends SearchDelegate {
-// Demo list to show querying
-  List<String> searchTerms = [
-    "Apple",
-    "Banana",
-    "Mango",
-    "Pear",
-    "Watermelons",
-    "Blueberries",
-    "Pineapples",
-    "Strawberries"
-  ];
-
-// first overwrite to
-// clear the search text
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    return [
-      IconButton(
-        onPressed: () {
-          query = '';
+      body: RefreshIndicator(
+        color: Colors.white,
+        backgroundColor: Colors.blue,
+        onRefresh: () async {
+          // Replace this delay with the code to be executed during refresh
+          // and return asynchronous code
+          return Future<void>.delayed(const Duration(seconds: 3));
         },
-        icon: Icon(Icons.clear),
+        // This check is used to customize listening to scroll notifications
+        // from the widget's children.
+        //
+        // By default this is set to `notification.depth == 0`, which ensures
+        // the only the scroll notifications from the first child are listened to.
+        //
+        // Here setting `notification.depth == 1` triggers the refresh indicator
+        // when overscrolling the nested scroll view.
+        notificationPredicate: (ScrollNotification notification) {
+          return notification.depth == 1;
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 100,
+                alignment: Alignment.center,
+                color: Colors.pink[100],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Pull down here',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const Text("RefreshIndicator won't trigger"),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.green[100],
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 25,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const ListTile(
+                      title: Text('Pull down here'),
+                      subtitle: Text('RefreshIndicator will trigger'),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-    ];
-  }
-
-// second overwrite to pop out of search menu
-  @override
-  Widget? buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, null);
-      },
-      icon: Icon(Icons.arrow_back),
-    );
-  }
-
-// third overwrite to show query result
-  @override
-  Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
-  }
-
-// last overwrite to show the
-// querying process at the runtime
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
     );
   }
 }

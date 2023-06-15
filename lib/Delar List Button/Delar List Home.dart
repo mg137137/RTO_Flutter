@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:rto_flutter/API%20Detail/API_Detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Api Detail/API_Detail.dart';
-import '../Dashboard.dart';
+import '../Screens/Dashboard Screen/Dashboard_Screen.dart';
 import 'Delar Detail.dart';
 
 late String id1;
@@ -83,7 +83,7 @@ class _Delar_List_homeState extends State<Delar_List_home> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Dashboard(
-                                      token: '$stoken',
+                                      token: '${widget.token}',
                                     )),
                           );
                         },

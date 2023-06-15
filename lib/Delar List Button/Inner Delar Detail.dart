@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Api Detail/API_Detail.dart';
-import '../Dashboard.dart';
-import '../Six_Boxes/All_Book.dart';
+import '../Screens/Dashboard Screen/Dashboard_Screen.dart';
 import '../Six_Boxes/vehicle_detail.dart';
 
 class Inner_Delar_Detail extends StatefulWidget {
@@ -112,7 +111,7 @@ class _Inner_Delar_DetailState extends State<Inner_Delar_Detail> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Dashboard(
-                                                token: '$stoken',
+                                                token: '${widget.token}',
                                               )),
                                     );
                                   },
@@ -309,7 +308,7 @@ class _Inner_Delar_DetailState extends State<Inner_Delar_Detail> {
                                         // If the server did return a 200 OK response, parse the JSON.
                                         final responseData =
                                             json.decode(response.body);
-                                        id1 = id;
+
                                         print(responseData);
                                         Navigator.push(
                                           context,

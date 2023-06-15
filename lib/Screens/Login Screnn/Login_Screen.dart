@@ -4,8 +4,8 @@ import 'package:rto_flutter/Constants/Global_Variabales.dart';
 import 'package:rto_flutter/Screens/Login%20Screnn/Controller_Login_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Dashboard.dart';
 import '../../Globaly Accesible/Varibales.dart';
+import '../Dashboard Screen/Dashboard_Screen.dart';
 import 'MVC_Login_Screen.dart';
 
 class Login_Screen extends StatefulWidget {
@@ -31,8 +31,8 @@ class _Login_ScreenState extends State<Login_Screen> {
 
   Future<void> Check_Alrady_Logged_In() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? Local_Store_Token = prefs.getString('Local_Store_Token');
-    String? Local_Store_UserName = prefs.getString('Local_Store_UserName');
+    String? Local_Store_Token = prefs.getString('token');
+    String? Local_Store_UserName = prefs.getString('userName');
 
     if (Local_Store_Token != null && Local_Store_UserName != null) {
       Global_Token = Local_Store_Token;
@@ -59,10 +59,8 @@ class _Login_ScreenState extends State<Login_Screen> {
 
       // Store in Local Storage
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-          'Local_Store_Token', '${loginData.MVC_Variable_Token}');
-      await prefs.setString(
-          'Local_Store_UserName', '${loginData.MVC_Variable_UserName}');
+      await prefs.setString('token', '${loginData.MVC_Variable_Token}');
+      await prefs.setString('userName', '${loginData.MVC_Variable_UserName}');
       Navigator.push(
           context,
           MaterialPageRoute(

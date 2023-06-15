@@ -6,7 +6,7 @@ import 'package:rto_flutter/Six_Boxes/vehicle_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Api Detail/API_Detail.dart';
-import '../Dashboard.dart';
+import '../Screens/Dashboard Screen/Dashboard_Screen.dart';
 
 late String id2;
 late final String localtoken;
@@ -180,7 +180,7 @@ class _Checkbook_StatusState extends State<Checkbook_Status> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Dashboard(
-                                      token: '$stoken',
+                                      token: '${widget.token}',
                                     )),
                           );
                         },

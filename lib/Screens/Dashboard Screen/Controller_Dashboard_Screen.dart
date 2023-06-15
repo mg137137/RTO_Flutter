@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:rto_flutter/Api%20Detail/API_Detail.dart';
+import 'package:rto_flutter/API%20Detail/API_Detail.dart';
 
-import '../MVC/MVC VehicleNumber With ID.dart';
+import 'MVC_Dashboard_Screen.dart';
 
-class Controller_Get_Allbook_Data {
+class Controller_Dashboard_Screen {
+  // Get All Book Data
   Future<dynamic> AllBookData(String? Token) async {
-    var url = Uri.parse(api_get_all_book_list);
+    var url = Uri.parse(Api_Dashboard_Screen_All_Book_List);
 
     final headers = {"Authorization": "Bearer $Token"};
     final response = await http.get(url, headers: headers);
@@ -18,10 +19,10 @@ class Controller_Get_Allbook_Data {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 
-      List<MVC_VehicleNumber_With_ID> finalListData = [];
+      List<MVC_Dashboard_Screen> finalListData = [];
 
       data.forEach((item) {
-        finalListData.add(MVC_VehicleNumber_With_ID.fromJson(item));
+        finalListData.add(MVC_Dashboard_Screen.fromJson(item));
       });
       return finalListData;
       // print(finalListData[0].MVC_Variable_VehcleNumber);

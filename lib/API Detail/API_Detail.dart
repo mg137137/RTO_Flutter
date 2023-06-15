@@ -4,8 +4,8 @@ var API_Base = 'rtoagentdms.com/api';
 //Login Screen API For Pass Post Data
 var API_Login_Screen = 'https://$API_Base/agentrouter/authUser';
 
-// api
-var api_get_all_book_list =
+//Dashbaord Screen All Book List
+var Api_Dashboard_Screen_All_Book_List =
     'https://rtoagentdms.com/api/mobileApprouter/getBookList';
 
 //Dashboard Api To Display Delar List

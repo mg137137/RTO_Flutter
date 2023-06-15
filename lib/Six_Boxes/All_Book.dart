@@ -2,18 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:rto_flutter/Screens/Dashboard%20Screen/MVC_Dashboard_Screen.dart';
 import 'package:rto_flutter/Six_Boxes/vehicle_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Api Detail/API_Detail.dart';
-import '../Dashboard.dart';
-
-late String id1;
-late final String localtoken;
 
 class All_Book extends StatefulWidget {
+  final List<MVC_Dashboard_Screen> MVC_All_Book_List;
   final String token;
-  const All_Book({super.key, required this.token});
+  const All_Book(
+      {super.key, required this.token, required this.MVC_All_Book_List});
 
   @override
   State<All_Book> createState() => _All_BookState();
@@ -23,6 +22,7 @@ class _All_BookState extends State<All_Book> {
   bool chakedu = false;
   TextEditingController _searchController = TextEditingController();
   bool isLoggedIn = false;
+  List<dynamic> hello = [];
 
   String _response = '';
   SharedPreferences? _prefs;
@@ -53,6 +53,7 @@ class _All_BookState extends State<All_Book> {
   void initState() {
     super.initState();
     _fetchData();
+    hello = widget.MVC_All_Book_List;
   }
 
   Future<void> _fetchData() async {
@@ -102,13 +103,7 @@ class _All_BookState extends State<All_Book> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Dashboard(
-                                      token: '$stoken',
-                                    )),
-                          );
+                          Navigator.of(context).pop();
                         },
                         icon: const Icon(
                           Icons.arrow_back_ios_new_outlined,
@@ -253,7 +248,6 @@ class _All_BookState extends State<All_Book> {
                                     // If the server did return a 200 OK response, parse the JSON.
                                     final responseData =
                                         json.decode(response.body);
-                                    id1 = id;
                                     print(responseData);
                                     Navigator.push(
                                       context,
